@@ -1,6 +1,6 @@
-# Landscape Photography
+# Ten States of Water
 
-Portfolio of landscape photographs by Theodore Ouyang. A static site with two albums, Yellowstone and Alaska, built from the `content` folder.
+Ten landscapes of Alaska and Yellowstone by Theodore Ouyang, with water in a different state in each. A static site with two albums, built from the `content` folder.
 
 ## Setup
 
