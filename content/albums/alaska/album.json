@@ -4,6 +4,50 @@
   "location": "Alaska, United States",
   "description": "Ice, tundra and the long northern light.",
   "accent": "#34505f",
-  "taken": "",
-  "cover": ""
+  "cover": "005.jpg",
+  "coverPosition": "50% 6%",
+  "works": {
+    "001.jpg": {
+      "title": "Tide and Snow",
+      "place": "Turnagain Arm",
+      "alt": "Snow-capped ridge descending to a sunset horizon above tidal flats cut by a winding silver channel.",
+      "appreciation": "The ridge falls from the upper right and delivers the eye to the last band of orange on the horizon. Below the waterline the same movement returns as a slow S of tidewater, drawn in silver across the mud. Dry grass and lichened rock at the lower left set the scale, and everything beyond them reads as distance."
+    },
+    "002.jpg": {
+      "title": "Blue Ice to the Sea",
+      "place": "Kenai Fjords",
+      "alt": "Pale blue tidewater glacier meeting calm water scattered with floating ice at dawn.",
+      "appreciation": "A wall of ice crosses the frame at a long angle, tall at the right and thinning toward a peach horizon. Its blue is cold and mineral, and the dawn answers from the left half of the water. The floes measure the fjord in plain steps, large near the viewer and small far out, with nothing human needed to give the scale."
+    },
+    "003.jpg": {
+      "title": "Pacific Silver",
+      "place": "Gulf of Alaska",
+      "alt": "Dark rocky shore and forested headlands beside a silver ocean under broken cloud.",
+      "appreciation": "Color nearly leaves this picture and light takes over. A break in the overcast lays a pale road on the water while the swells cross it in long parallel lines. Wet black rock holds the bottom of the frame, one tide pool repeats the sky at the smallest possible scale, and the headlands step away behind, each paler than the last."
+    },
+    "004.jpg": {
+      "title": "Veins of the Icefield",
+      "place": "Harding Icefield",
+      "alt": "Vast snowfield with blue crevasses and dark rock ridges under a low golden sun.",
+      "appreciation": "From this height the ice reads as a body: long swells of snow with crevasses opening along them like veins near the skin. Low sun rakes the field, turning each fold rose on one side and blue on the other. The dark nunataks supply the only hard edges, and the rock at the lower left places the viewer on the rim of all that white."
+    },
+    "005.jpg": {
+      "title": "Denali in Autumn",
+      "place": "Denali",
+      "alt": "Snow-covered Denali glowing in low sun above a braided river and red frosted tundra.",
+      "appreciation": "Three registers stack with classical clarity: frosted tundra in crimson, a braided river in steel and rose, and the massif lit far above its dark foothills. The river does the connecting, carrying the color of the sky down into the ground. Frost holds the foreground close and cool, which keeps the warmth on the summit distant and rare."
+    },
+    "006.jpg": {
+      "title": "Chugach Blue",
+      "place": "Chugach Mountains",
+      "alt": "Wind-scoured frozen lake below snowy peaks in blue twilight, with small spruces on the left shore.",
+      "appreciation": "Blue hour reduces the palette to slate and one line of rose behind the summit. Wind has written across the frozen lake in pale strokes, and a single crack wanders through them toward the mountain. The spruces at the left stand small, dark and upright, the only vertical marks in a scene built from slopes and sweeps."
+    },
+    "007.jpg": {
+      "title": "Sculpted Ice",
+      "place": "Matanuska Glacier",
+      "alt": "Close view of a curving turquoise ice surface with a glacier and gray mountains beyond.",
+      "appreciation": "The viewpoint sits almost inside the ice and trades distance for touch. One sweep climbs the left edge and breaks like a wave held still, its surface glazed, pitted and flecked with grit. Behind it the glacier runs out in paler folds to gray mountains, and the eye travels from what could be handled to what can only be seen."
+    }
+  }
 }

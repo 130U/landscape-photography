@@ -35,9 +35,9 @@ Wide screens show the full frame, aligned by `hero.position` in `content/site.js
 | File | Controls |
 | --- | --- |
 | `content/site.json` | Name, tagline, description, addresses, and cover framing |
-| `content/albums/<album>/album.json` | Title, location, description, accent color, date, and order |
+| `content/albums/<album>/album.json` | Title, location, description, accent color, order, cover, and the text beside each photograph |
 
-Set `taken` to a date such as `"August 2026"` to display it on the album page. Set `cover` to a file name such as `"007.jpg"` to choose the album's banner image; the first photograph is used otherwise.
+Set `cover` to a file name such as `"007.jpg"` to choose the album's banner image; the first photograph is used otherwise. `coverPosition` sets which part of it the banner shows, as a CSS position such as `"50% 6%"`. Each entry under `works` is keyed by file name and holds a `title`, `place`, `alt` text, and `appreciation`.
 
 ## Publishing
 

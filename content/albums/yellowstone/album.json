@@ -2,8 +2,27 @@
   "order": 1,
   "title": "Yellowstone",
   "location": "Yellowstone National Park, Wyoming",
-  "description": "Steam, stone and open valleys on the high plateau.",
+  "description": "Steam, stone and falling water on the high plateau.",
   "accent": "#6b4f2a",
-  "taken": "",
-  "cover": ""
+  "cover": "001.jpg",
+  "works": {
+    "001.jpg": {
+      "title": "The Earth's Spectrum",
+      "place": "Grand Prismatic Spring",
+      "alt": "Deep blue hot spring ringed with yellow and orange mineral mats, steam rising toward a line of pines.",
+      "appreciation": "The pool is cropped so that it never closes, which makes its blue larger than the frame. Color runs outward with the falling temperature of the water, from deep blue through green and yellow into orange mats that branch like river deltas. Steam softens the far shore, and the dark line of pines at the top cools everything beneath it."
+    },
+    "002.jpg": {
+      "title": "White Ribbon in the Canyon",
+      "place": "Lower Falls, Yellowstone River",
+      "alt": "Tall waterfall at the head of a yellow-walled canyon with pines in the foreground and a green river below.",
+      "appreciation": "The waterfall is small in the frame and still commands it, because every slope leans toward it. Sun strikes the ochre wall at the left and leaves the falls in cooler light, so warm rock and white water never compete. Mist dissolves the base, the river returns at the bottom center, and the foreground pines supply the dark edge that throws the canyon back."
+    },
+    "003.jpg": {
+      "title": "Steam on Snow",
+      "place": "Geyser Basin in Winter",
+      "alt": "Snow-covered thermal basin with orange terraces, three bare dead trees and drifting golden steam.",
+      "appreciation": "Frost and heat share one surface here: snow banks lip over thermal water while orange mineral terraces show through the thaw. Three dead pines step back across the basin in diminishing scale and give the drifting steam a measure of depth. Low sun gilds the vapor at the left, and the whole scene hovers between freezing and boiling."
+    }
+  }
 }

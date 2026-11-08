@@ -171,7 +171,7 @@ const homeBody = (site, albums, hero, signature) => `${bar(site, albums, '', fal
   <div class="plates" id="albums">
 ${albums
   .map(
-    (album, index) => `    <section class="plate" style="--accent:${album.accent}">
+    (album, index) => `    <section class="plate" style="--accent:${album.accent}${album.coverPosition ? `;--cover-position:${escapeHtml(album.coverPosition)}` : ''}">
       ${album.cover ? imageTag(album.cover, { alt: '', sizes: '100vw', className: 'plate__image', parallax: 8 }) : ''}
       <div class="plate__content">
         <h2 class="plate__title">${String(index + 1).padStart(2, '0')}: ${escapeHtml(album.title)}</h2>
@@ -185,29 +185,34 @@ ${albums
 </main>
 ${footer(site)}`;
 
+const workCaption = ({ title, place, appreciation }) =>
+  title
+    ? `
+      <figcaption class="work__text">
+        <h2 class="work__title">${escapeHtml(title)}</h2>
+${place ? `        <p class="work__place">${escapeHtml(place)}</p>\n` : ''}        <p>${escapeHtml(appreciation)}</p>
+      </figcaption>`
+    : '';
+
 const albumBody = (site, albums, album) => `${bar(site, albums, '../', true)}
 <main class="album">
   <header class="album__head">
     <h1 class="album__title">${escapeHtml(album.title)}</h1>
     <p class="album__location">${escapeHtml(album.location)}</p>
+    <p class="album__intro">${escapeHtml(album.description)}</p>
   </header>
-  <div class="album__layout">
-    <div class="album__photos">
+  <div class="album__works">
 ${album.photos
   .map(
-    (photo, index) =>
-      `      ${imageTag(photo, {
-        alt: `${album.title}, photograph ${index + 1}`,
+    (photo, index) => `    <figure class="work">
+      ${imageTag(photo, {
+        alt: photo.work.alt ?? `${album.title}, image ${index + 1}`,
         sizes: '(max-width: 860px) 100vw, 66vw',
         eager: index === 0,
-      })}`,
+      })}${workCaption(photo.work)}
+    </figure>`,
   )
   .join('\n')}
-    </div>
-    <aside class="album__info">
-      <h2 class="album__label">${escapeHtml(album.title)}</h2>
-      <p>${escapeHtml(album.description)}</p>
-${album.taken ? `      <h3 class="album__label">Photos Taken</h3>\n      <p>${escapeHtml(album.taken)}</p>\n` : ''}    </aside>
   </div>
 </main>
 ${footer(site)}`;
@@ -232,8 +237,12 @@ async function build() {
     const outDir = join(DIST, album.slug, 'photos');
     await mkdir(outDir, { recursive: true });
     album.photos = [];
+    for (const file of Object.keys(album.works ?? {})) {
+      if (!album.files.includes(file)) console.warn(`${album.slug}/album.json describes ${file}, which is not in the album.`);
+    }
     for (const file of album.files) {
-      album.photos.push(await renderPhoto(join(album.dir, file), PHOTO_WIDTHS, outDir, `${album.slug}/photos/`));
+      const photo = await renderPhoto(join(album.dir, file), PHOTO_WIDTHS, outDir, `${album.slug}/photos/`);
+      album.photos.push({ ...photo, work: album.works?.[file] ?? {} });
     }
     album.cover = album.photos.find((photo) => `${photo.name}${extname(album.cover ?? '')}` === album.cover) ?? album.photos[0] ?? null;
   }
