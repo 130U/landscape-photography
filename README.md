@@ -1,6 +1,6 @@
 # Landscape Photography
 
-Portfolio of landscape photographs by Theodore Ouyang. A static site with two albums, Yellowstone and Alaska, generated from the `content` folder.
+Portfolio of landscape photographs by Theodore Ouyang. A static site with two albums, Yellowstone and Alaska, built from the `content` folder.
 
 ## Setup
 
