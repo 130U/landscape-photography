@@ -13,7 +13,10 @@ const CACHE = join(ROOT, '.cache');
 
 const PHOTO_TYPES = new Set(['.jpg', '.jpeg', '.png', '.tif', '.tiff', '.webp']);
 const PHOTO_WIDTHS = [1280, 2560];
-const HERO_WIDTHS = [1600, 2880];
+const HERO_WIDTHS = [1600, 2880, 3840];
+const HERO_PORTRAIT_EDGES = [1620, 2400];
+const HERO_PORTRAIT_RATIO = 2 / 3;
+const HERO_HEIGHT_VH = 112;
 
 const escapeHtml = (value) =>
   String(value).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
@@ -23,11 +26,12 @@ const readJson = async (file) => JSON.parse(await readFile(file, 'utf8'));
 const naturally = (a, b) => a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' });
 
 /** Encodes one size of a photograph into the cache and copies it to `outFile`. */
-async function renderSize(source, hash, longEdge, outFile) {
-  const cached = join(CACHE, `${hash}-${longEdge}.jpg`);
+async function renderSize(source, hash, longEdge, outFile, crop) {
+  const cached = join(CACHE, `${hash}-${crop ? `${crop.left}x${crop.width}-` : ''}${longEdge}.jpg`);
   if (!existsSync(cached)) {
-    await sharp(source)
-      .rotate()
+    const image = sharp(source).rotate();
+    if (crop) image.extract(crop);
+    await image
       .resize({ width: longEdge, height: longEdge, fit: 'inside', withoutEnlargement: true })
       .jpeg({ quality: 84, mozjpeg: true })
       .toFile(cached);
@@ -38,13 +42,12 @@ async function renderSize(source, hash, longEdge, outFile) {
 }
 
 /** Writes each distinct size of a photograph and returns the data its <img> needs. */
-async function renderPhoto(source, widths, outDir, urlPrefix) {
+async function renderPhoto(source, widths, outDir, urlPrefix, { name = parse(source).name, crop } = {}) {
   const hash = createHash('sha1').update(await readFile(source)).digest('hex').slice(0, 20);
-  const { name } = parse(source);
   const sizes = [];
   for (const longEdge of widths) {
     const file = `${name}-${longEdge}.jpg`;
-    const { width, height } = await renderSize(source, hash, longEdge, join(outDir, file));
+    const { width, height } = await renderSize(source, hash, longEdge, join(outDir, file), crop);
     if (sizes.some((size) => size.width === width)) continue;
     sizes.push({ url: `${urlPrefix}${file}`, width, height });
   }
@@ -52,9 +55,25 @@ async function renderPhoto(source, widths, outDir, urlPrefix) {
   return {
     name,
     src: largest.url,
+    preview: sizes[0].url,
     srcset: sizes.map((size) => `${size.url} ${size.width}w`).join(', '),
     width: largest.width,
     height: largest.height,
+  };
+}
+
+/** Renders the full frame for wide screens and a tall crop around `portraitCenter` for upright ones. */
+async function renderHero(source, { portraitCenter }) {
+  const outDir = join(DIST, 'assets');
+  const { width, height } = await sharp(source).rotate().metadata();
+  const cropWidth = Math.min(width, Math.round(height * HERO_PORTRAIT_RATIO));
+  const left = Math.max(0, Math.min(width - cropWidth, Math.round(width * portraitCenter - cropWidth / 2)));
+  return {
+    landscape: await renderPhoto(source, HERO_WIDTHS, outDir, 'assets/'),
+    portrait: await renderPhoto(source, HERO_PORTRAIT_EDGES, outDir, 'assets/', {
+      name: 'hero-portrait',
+      crop: { left, top: 0, width: cropWidth, height },
+    }),
   };
 }
 
@@ -71,8 +90,8 @@ async function loadAlbums() {
   return albums.sort((a, b) => a.order - b.order);
 }
 
-const imageTag = (photo, { alt, sizes, className = '', parallax = false, eager = false, root = '' }) =>
-  `<img${className ? ` class="${className}"` : ''}${parallax ? ' data-parallax' : ''} src="${root}${photo.src}" srcset="${photo.srcset
+const imageTag = (photo, { alt, sizes, className = '', parallax = 0, eager = false, root = '' }) =>
+  `<img${className ? ` class="${className}"` : ''}${parallax ? ` data-parallax="${parallax}"` : ''} src="${root}${photo.src}" srcset="${photo.srcset
     .split(', ')
     .map((entry) => root + entry)
     .join(', ')}" sizes="${sizes}" width="${photo.width}" height="${photo.height}" alt="${escapeHtml(alt)}" ${
@@ -95,6 +114,14 @@ ${albums
   .join('\n')}
   </ul>
 </nav>`;
+
+const heroPicture = ({ landscape, portrait }) => {
+  const displayWidth = (photo) => `max(100vw, ${Math.ceil((HERO_HEIGHT_VH * photo.width) / photo.height)}vh)`;
+  return `<picture>
+      <source media="(max-aspect-ratio: 1/1)" srcset="${portrait.srcset}" sizes="${displayWidth(portrait)}">
+      ${imageTag(landscape, { alt: '', sizes: displayWidth(landscape), className: 'hero__image', parallax: 5, eager: true })}
+    </picture>`;
+};
 
 const bar = (site, albums, root, stuck) => `<header class="bar${stuck ? ' bar--stuck' : ''}" data-bar>
   <a class="bar__brand" href="${root || '#top'}" aria-label="${escapeHtml(site.name)}"><img src="${root}assets/signature.svg" alt="" width="212" height="34"></a>
@@ -133,8 +160,8 @@ ${body}
 
 const homeBody = (site, albums, hero, signature) => `${bar(site, albums, '', false)}
 <main id="top">
-  <section class="hero">
-    ${hero ? imageTag(hero, { alt: '', sizes: '100vw', className: 'hero__image', parallax: true, eager: true }) : ''}
+  <section class="hero" style="--hero-position:${escapeHtml(site.hero.position)}">
+    ${hero ? heroPicture(hero) : ''}
     <div class="hero__inner">
       <a class="hero__name" href="#albums" aria-label="${escapeHtml(site.name)}">${signature}</a>
       <h1 class="hero__tagline">${escapeHtml(site.tagline)}</h1>
@@ -145,7 +172,7 @@ const homeBody = (site, albums, hero, signature) => `${bar(site, albums, '', fal
 ${albums
   .map(
     (album, index) => `    <section class="plate" style="--accent:${album.accent}">
-      ${album.cover ? imageTag(album.cover, { alt: '', sizes: '100vw', className: 'plate__image', parallax: true }) : ''}
+      ${album.cover ? imageTag(album.cover, { alt: '', sizes: '100vw', className: 'plate__image', parallax: 8 }) : ''}
       <div class="plate__content">
         <h2 class="plate__title">${String(index + 1).padStart(2, '0')}: ${escapeHtml(album.title)}</h2>
         <p class="plate__text">${escapeHtml(album.description)}</p>
@@ -199,7 +226,7 @@ async function build() {
   const albums = await loadAlbums();
 
   const heroFile = ['hero.jpg', 'hero.jpeg', 'hero.png'].map((f) => join(CONTENT, f)).find(existsSync);
-  const hero = heroFile ? await renderPhoto(heroFile, HERO_WIDTHS, join(DIST, 'assets'), 'assets/') : null;
+  const hero = heroFile ? await renderHero(heroFile, site.hero) : null;
 
   for (const album of albums) {
     const outDir = join(DIST, album.slug, 'photos');
@@ -215,7 +242,7 @@ async function build() {
     .replace('<svg ', '<svg class="signature" aria-hidden="true" ')
     .trim();
 
-  const homeOg = hero?.src ?? albums.find((album) => album.cover)?.cover.src;
+  const homeOg = hero?.landscape.preview ?? albums.find((album) => album.cover)?.cover.preview;
   await writeFile(
     join(DIST, 'index.html'),
     page({
@@ -246,7 +273,7 @@ async function build() {
         title: `${album.title} | ${site.name}`,
         description: album.description,
         canonical: new URL(`${album.slug}/`, site.url).href,
-        ogImage: album.cover?.src,
+        ogImage: album.cover?.preview,
         root: '../',
         body: albumBody(site, albums, local),
       }),

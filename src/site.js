@@ -30,7 +30,6 @@ menu.addEventListener('click', (event) => {
 const staysStuck = bar.classList.contains('bar--stuck');
 const layers = [...document.querySelectorAll('[data-parallax]')];
 const animateLayers = layers.length > 0 && !matchMedia('(prefers-reduced-motion: reduce)').matches;
-const TRAVEL = 8;
 let queued = false;
 
 function update() {
@@ -39,11 +38,11 @@ function update() {
   if (!animateLayers) return;
   const viewport = window.innerHeight;
   for (const layer of layers) {
-    const rect = layer.parentElement.getBoundingClientRect();
+    const rect = layer.closest('section').getBoundingClientRect();
     if (rect.bottom < 0 || rect.top > viewport) continue;
     const reach = (viewport + rect.height) / 2;
     const offset = (rect.top + rect.height / 2 - viewport / 2) / reach;
-    layer.style.transform = `translate3d(0, ${(-offset * TRAVEL).toFixed(2)}%, 0)`;
+    layer.style.transform = `translate3d(0, ${(-offset * Number(layer.dataset.parallax)).toFixed(2)}%, 0)`;
   }
 }
 

@@ -3,5 +3,9 @@
   "tagline": "Landscape Photography",
   "description": "Landscape photographs of Yellowstone and Alaska by Theodore Ouyang.",
   "url": "https://www.theodoreoy.com/landscape-photography/",
-  "home": "https://www.theodoreoy.com/"
+  "home": "https://www.theodoreoy.com/",
+  "hero": {
+    "position": "50% 25%",
+    "portraitCenter": 0.47
+  }
 }

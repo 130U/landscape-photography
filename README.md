@@ -28,11 +28,13 @@ Set the landing page photograph with:
 npm run add -- hero "D:\Photos\forest.jpg"
 ```
 
+Wide screens show the full frame, aligned by `hero.position` in `content/site.json`. Phones and upright tablets show a 2:3 crop centered at `hero.portraitCenter`, where 0 is the left edge of the photograph and 1 is the right edge.
+
 ## Editing Text
 
 | File | Controls |
 | --- | --- |
-| `content/site.json` | Name, tagline, description, and addresses |
+| `content/site.json` | Name, tagline, description, addresses, and cover framing |
 | `content/albums/<album>/album.json` | Title, location, description, accent color, date, and order |
 
 Set `taken` to a date such as `"August 2026"` to display it on the album page. Set `cover` to a file name such as `"007.jpg"` to choose the album's banner image; the first photograph is used otherwise.
