@@ -207,7 +207,7 @@ ${album.photos
     (photo, index) => `    <figure class="work">
       ${imageTag(photo, {
         alt: photo.work.alt ?? `${album.title}, image ${index + 1}`,
-        sizes: '(max-width: 860px) 100vw, 66vw',
+        sizes: '(max-width: 1120px) 100vw, 66vw',
         eager: index === 0,
       })}${workCaption(photo.work)}
     </figure>`,
