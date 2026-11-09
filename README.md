@@ -1,56 +1,49 @@
 # Ten States of Water
 
-Ten landscapes of Alaska and Yellowstone by Theodore Ouyang, with water in a different state in each. A static site with two albums, built from the `content` folder.
+> "Nothing under heaven is softer or weaker than water, yet nothing that attacks the hard and strong can surpass it."
+>
+> Laozi, *Tao Te Ching*, ch. 78
 
-## Setup
+**Ten landscapes of Alaska and Yellowstone, with water in a different state in each.**
 
-Requires Node 20.9 or later.
+**[View the work](https://www.theodoreoy.com/ten-states-of-water/)**
 
-```bash
-npm ci
-npm run dev
-```
+[![The cover of Ten States of Water: the name Theodore Ouyang written across the sky above a snowy ridge, a sunset horizon, and winding tidewater](.github/readme/cover.jpg)](https://www.theodoreoy.com/ten-states-of-water/)
 
-The site is served at <http://localhost:4323/>. Run `npm run dev` again to pick up new photographs or edits.
+When I think of Alaska and Yellowstone, I think of water. This series is the picture that forms in my mind. It arrives as tide, stands as a glacier, lies frozen on a lake, falls through a canyon, and leaves a hot spring as steam.
 
-## Adding Photographs
+## The Idea
 
-```bash
-npm run add -- yellowstone "D:\Photos\Yellowstone 2026"
-npm run add -- alaska "D:\Photos\denali-01.jpg" "D:\Photos\denali-02.jpg"
-```
+Water is the softest thing in these landscapes and the one that made them. The glacier carves the fjord, the river opens the canyon, the tide draws its channels through the mud, and the spring lays down its own terraces. I built the series on that reversal, so every hard shape in it can be traced to the water in the frame.
 
-Each photograph is numbered after the last one in its album and saved to `content/albums/<album>/` as an upright sRGB JPEG, at most 3840 pixels on the long edge, with camera and GPS metadata removed. Export raw camera files to JPEG or TIFF first. Albums display photographs in file-name order, so renaming a file changes its position.
+[![The ten works in two rows of five, seven of Alaska followed by three of Yellowstone](.github/readme/ten-works.jpg)](https://www.theodoreoy.com/ten-states-of-water/)
 
-Set the landing page photograph with:
+## The Logic of the Series
 
-```bash
-npm run add -- hero "D:\Photos\forest.jpg"
-```
+One rule governs the selection: no state of water appears twice. Ordered by state, the ten works read as a single passage from ice to vapor. Alaska holds the cold end. Yellowstone answers with a waterfall, a hot spring, and steam lifting off snow.
 
-Wide screens show the full frame, aligned by `hero.position` in `content/site.json`. Phones and upright tablets show a 2:3 crop centered at `hero.portraitCenter`, where 0 is the left edge of the photograph and 1 is the right edge.
+![The ten works arranged by the state of the water in each: icefield, glacier ice, tidewater glacier and lake ice as solid; tide, open sea, braided river, waterfall and hot spring as liquid; steam as vapor](.github/readme/ten-states.svg)
 
-## Editing Text
+## The Frame
 
-| File | Controls |
-| --- | --- |
-| `content/site.json` | Name, tagline, description, addresses, and cover framing |
-| `content/albums/<album>/album.json` | Title, location, description, accent color, order, cover, and the text beside each photograph |
+I set Alaska in 4:3 and Yellowstone in 3:2. The squarer frame gives the northern sky room above the ice. The longer frame runs across a spring and down a canyon, so the ground carries the picture and the sky can almost disappear. Inside the albums every image keeps its full proportions.
 
-Set `cover` to a file name such as `"007.jpg"` to choose the album's banner image; the first photograph is used otherwise. `coverPosition` sets which part of it the banner shows, as a CSS position such as `"50% 6%"`. Each entry under `works` is keyed by file name and holds a `title`, `place`, `alt` text, and `appreciation`.
+![Blue Ice to the Sea in 4:3 and The Earth's Spectrum in 3:2](.github/readme/two-frames.jpg)
 
-## Publishing
+## The Name
 
-Pushing to `main` builds the site with GitHub Actions and deploys `dist` to GitHub Pages.
+The cover is one frame, and the lettering is its single gesture: my name writes itself letter by letter into the open sky above the ridge. On a phone the frame is cut to 2:3 around the point where the mountains meet the light, which keeps the sunset, the snow line, and the channel in one column.
 
-```bash
-git add content
-git commit -m "Add Yellowstone photographs"
-git push
-```
+## The Readings
+
+A landscape is finished by the way it is looked at, so every image keeps a reading beside it: about sixty words on where the eye goes, how the light falls, and what holds the frame together. On a wide screen the reading stays in view while its image passes, so the two are read at once.
+
+![Snow-covered Denali glowing in low sun above a braided river and red frosted tundra](.github/readme/denali-in-autumn.jpg)
+
+*Denali in Autumn.* Three registers stack with classical clarity: frosted tundra in crimson, a braided river in steel and rose, and the massif lit far above its dark foothills.
 
 ## Credits
 
-The name is drawn from WindSong by Robert Leuschke (SIL Open Font License). Text is set in Roboto, Roboto Condensed, and Source Sans 3, all hosted with the site.
+The name is drawn from WindSong by Robert Leuschke (SIL Open Font License). Text is set in Roboto, Roboto Condensed, and Source Sans 3.
 
-Photographs are &copy; Theodore Ouyang. All rights reserved.
+Images are &copy; Theodore Ouyang. All rights reserved.
